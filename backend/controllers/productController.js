@@ -2,8 +2,25 @@ import Product from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
-  res.status(200).json(products);
+  const pageSize = 2
+  const page = Number(req.query.pageNumber) || 1
+
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
+    : {}
+
+  const count = await Product.countDocuments({ ...keyword })
+
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+
+  res.json({ products, page, pages: Math.ceil(count / pageSize) })
 });
 
 export const getSingleProduct = asyncHandler(async (req, res) => {
@@ -48,20 +65,57 @@ export const updateProduct = asyncHandler(async (req, res) => {
   const { name, price, image, brand, category, countInstock, description } =
     req.body;
 
-    const product =await Product.FindById(req.params.id)
-    if(!product) {
-        res.status(404)
-        throw new Error("Product Not Found")
-    }
+  const product = await Product.FindById(req.params.id);
+  if (!product) {
+    res.status(404);
+    throw new Error("Product Not Found");
+  }
 
-    product.name =name
-    product.price =name
-    product.image =name
-    product.brand =name
-    product.category =name
-    product.countInstock =name
-    product.description =description
+  product.name = name;
+  product.price = name;
+  product.image = name;
+  product.brand = name;
+  product.category = name;
+  product.countInstock = name;
+  product.description = description;
 
   const updateProduct = await product.save();
   res.status(201).json(updateProduct);
+});
+
+export const createProductReviews = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    res.status(404);
+    throw new Error("Product Not Found");
+  }
+
+  const hasReviewed = product.reviews.find(
+    (r) => r.user.toString() === req.user._id.toString()
+  );
+
+  if (hasReviewed) {
+    res.status(400);
+    throw new Error("Product already reviewed");
+  }
+
+  const review = {
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+    user: req.user._id,
+  };
+
+  product.reviews.push(review);
+
+  product.numReviews = product.reviews.length;
+
+  product.rating =
+    product.reviews.reduce((total, item) => item.rating + total, 0) /
+    product.reviews.length;
+
+  await product.save();
+  res.status(201).json(product);
 });

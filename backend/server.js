@@ -6,9 +6,11 @@ import userRouter from './routes/userRouter.js'
 import orderRouter from './routes/orderRouter.js'
 import { notFound,errorHandler } from "./middleware/errorMiddleware.js";
 import 'express-async-errors'
+import morgan from 'morgan'
 dotenv.config();
 connectDB();
 const app = express();
+app.use(morgan('dev'))
 app.use(express.json())
 app.get("/", (req, res) => {
   res.send("API is running....");
