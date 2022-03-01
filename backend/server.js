@@ -7,11 +7,23 @@ import orderRouter from './routes/orderRouter.js'
 import { notFound,errorHandler } from "./middleware/errorMiddleware.js";
 import 'express-async-errors'
 import morgan from 'morgan'
+import fileUpload from 'express-fileupload'
+import {v2 as cloudinary}  from 'cloudinary';
+
 dotenv.config();
+
 connectDB();
 const app = express();
+app.use(fileUpload({ useTempFiles: true }))
+cloudinary.config({
+  cloud_name:process.env.CLOUD_NAME,
+  api_key:process.env.CLOUD_API_KEY,
+  api_secret:process.env.CLOUD_API_SECRET,
+
+})
 app.use(morgan('dev'))
 app.use(express.json())
+
 app.get("/", (req, res) => {
   res.send("API is running....");
 });

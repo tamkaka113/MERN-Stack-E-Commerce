@@ -8,9 +8,11 @@ import {
   createProduct,
   createProductReviews
 } from "../controllers/productController.js";
+import {uploadImageController} from '../controllers/uploadImageController.js'
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getAllProducts).post(protect,admin,createProduct);
+router.route("/").get(getAllProducts).post(protect,admin,createProduct)
+router.post('/uploads',protect,admin,uploadImageController)
 router
   .route("/:id")
   .get(getSingleProduct)

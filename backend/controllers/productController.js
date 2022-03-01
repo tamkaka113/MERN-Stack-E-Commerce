@@ -3,22 +3,25 @@ import asyncHandler from "express-async-handler";
 
 export const getAllProducts = asyncHandler(async (req, res) => {
   const pageSize = 2
-  const page = Number(req.query.pageNumber) || 1
 
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: 'i',
-        },
-      }
-    : {}
+  const  {keyword,pageNumber } = req.query 
 
-  const count = await Product.countDocuments({ ...keyword })
+  const queryObject = {}
 
-  const products = await Product.find({ ...keyword })
+  if(keyword) {
+    queryObject.name ={ $regex: keyword, $options: 'i' };
+      
+  } 
+
+  const page = Number(pageNumber) || 1
+
+  const count = await Product.countDocuments(queryObject)
+
+  const products = await Product.find(queryObject)
     .limit(pageSize)
     .skip(pageSize * (page - 1))
+
+    
 
   res.json({ products, page, pages: Math.ceil(count / pageSize) })
 });
@@ -62,6 +65,8 @@ export const createProduct = asyncHandler(async (req, res) => {
 });
 
 export const updateProduct = asyncHandler(async (req, res) => {
+
+  
   const { name, price, image, brand, category, countInstock, description } =
     req.body;
 
@@ -72,11 +77,11 @@ export const updateProduct = asyncHandler(async (req, res) => {
   }
 
   product.name = name;
-  product.price = name;
-  product.image = name;
-  product.brand = name;
-  product.category = name;
-  product.countInstock = name;
+  product.price = price;
+  product.image = image;
+  product.brand = brand;
+  product.category = brand;
+  product.countInstock = category;
   product.description = description;
 
   const updateProduct = await product.save();
