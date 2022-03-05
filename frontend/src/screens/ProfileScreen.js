@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
-import { listMyOrders, myOrderList } from "../actions/orderActions";
+import { listMyOrders } from "../actions/orderActions";
 
 const ProfileScreen = ({ history }) => {
   const [name, setName] = useState("");
@@ -137,7 +137,7 @@ const ProfileScreen = ({ history }) => {
                   </td>
                   <td>
                     {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
+                      order?.deliveredAt?.substring(0, 10)
                     ) : (
                       <i className="fas fa-times" style={{ color: "red" }}></i>
                     )}

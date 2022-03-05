@@ -2,28 +2,42 @@ import Product from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const pageSize = 2
+  const pageSize = 1;
 
-  const  {keyword,pageNumber } = req.query 
+  const { keyword, pageNumber, category, rating, price } = req.query;
 
-  const queryObject = {}
+  console.log(category);
+  const queryObject = {};
 
-  if(keyword) {
-    queryObject.name ={ $regex: keyword, $options: 'i' };
-      
-  } 
+  if (keyword) {
+    queryObject.name = { $regex: keyword, $options: "i" };
+  }
 
-  const page = Number(pageNumber) || 1
+  if (category && category !== "all") {
+    queryObject.category = category;
+  }
 
-  const count = await Product.countDocuments(queryObject)
+  if (rating && rating !== "all") {
+    queryObject.rating = rating;
+  }
+
+  if (price && price !== "all") {
+    queryObject.price = {
+        $gte: Number(price.split("-")[0]),
+        $lte: Number(price.split("-")[1]),
+      }
+    
+  }
+
+  const page = Number(pageNumber) || 1;
+
+  const count = await Product.countDocuments(queryObject);
 
   const products = await Product.find(queryObject)
     .limit(pageSize)
-    .skip(pageSize * (page - 1))
+    .skip(pageSize * (page - 1));
 
-    
-
-  res.json({ products, page, pages: Math.ceil(count / pageSize) })
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 export const getSingleProduct = asyncHandler(async (req, res) => {
@@ -65,12 +79,10 @@ export const createProduct = asyncHandler(async (req, res) => {
 });
 
 export const updateProduct = asyncHandler(async (req, res) => {
-
-  
   const { name, price, image, brand, category, countInstock, description } =
     req.body;
 
-  const product = await Product.FindById(req.params.id);
+  const product = await Product.findById(req.params.id);
   if (!product) {
     res.status(404);
     throw new Error("Product Not Found");
@@ -80,8 +92,8 @@ export const updateProduct = asyncHandler(async (req, res) => {
   product.price = price;
   product.image = image;
   product.brand = brand;
-  product.category = brand;
-  product.countInstock = category;
+  product.category = category;
+  product.countInstock = countInstock;
   product.description = description;
 
   const updateProduct = await product.save();
@@ -123,4 +135,10 @@ export const createProductReviews = asyncHandler(async (req, res) => {
 
   await product.save();
   res.status(201).json(product);
+});
+
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  res.status(200).json(products);
 });

@@ -23,13 +23,13 @@ const { userInfo} =userLogin
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <LinkContainer to="/">
+          <LinkContainer to="/" onClick ={()=>{ window.location.reload()}}>
             <Navbar.Brand>E-Shop</Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle  className='mb-1' aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
 
-          <Route render ={({history})=> <SearchBox history ={history}/>}/>
+          <Route render ={({history})=> <SearchBox  history ={history}/>}/>
             <Nav className="ml-auto">
               <LinkContainer
                 to="/cart"

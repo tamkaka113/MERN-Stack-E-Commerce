@@ -33,9 +33,7 @@ const ProductScreen = ({ match, history }) => {
 
   const { userInfo } = userLogin;
 
-  console.log(productDetails);
-
-  const QtyInStocks = Array.from(
+  const qtyInStocks = Array.from(
     { length: product.countInStock },
     (_, index) => index + 1
   );
@@ -119,7 +117,7 @@ const ProductScreen = ({ match, history }) => {
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}
                           >
-                            {QtyInStocks.map((qtyInStock) => {
+                            {qtyInStocks.map((qtyInStock) => {
                               return (
                                 <option key={qtyInStock}>{qtyInStock}</option>
                               );

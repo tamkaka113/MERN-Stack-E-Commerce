@@ -8,30 +8,27 @@ import ProductScreen from "./screens/ProductScreen";
 import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import  ProfileScreen  from "./screens/ProfileScreen";
-import ShippingScreen from './screens/ShippingScreen'
+import ProfileScreen from "./screens/ProfileScreen";
+import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
-import ProductEditScreen from './screens/ProductEditScreen'
-import OrderListScreen from './screens/OrderListScreen'
-
-
-
+import ProductEditScreen from "./screens/ProductEditScreen";
+import OrderListScreen from "./screens/OrderListScreen";
+import {FilterProvider} from "./contexts/FilterContexts";
 const App = () => {
-
-
   return (
     <Router>
+      <FilterProvider>
       <Header />
       <main className="py-3">
         <Container>
           <Route path="/login" component={LoginScreen} exact />
-          <Route path="/register" component={RegisterScreen}  />
-          <Route exact path="/profile" component={ProfileScreen}  />
+          <Route path="/register" component={RegisterScreen} exact/>
+          <Route exact path="/profile" component={ProfileScreen}/>
           <Route path="/shipping" component={ShippingScreen} />
           <Route path="/payment" component={PaymentScreen} />
           <Route path="/placeorder" component={PlaceOrderScreen} />
@@ -39,18 +36,18 @@ const App = () => {
           <Route path="/admin/userlist" component={UserListScreen} />
           <Route path="/order/:id" component={OrderScreen} />
           <Route path="/admin/orderlist" component={OrderListScreen} />
-          <Route path="/search/:keyword" component={HomeScreen} exact />
-          <Route path='/' component={HomeScreen} exact/>
           <Route path="/product/:id" component={ProductScreen} />
           <Route path="/admin/productlist" component={ProductListScreen} />
           <Route path="/admin/product/:id/edit" component={ProductEditScreen} />
           <Route path="/cart/:id?" component={CartScreen} />
-          <Route path='/page/:pageNumber' component={HomeScreen} exact/>
-          <Route path='/search/:keyword/page/:pageNumber' component={HomeScreen} exact />
+          <Route path="/homeProduct/:id" component={HomeScreen} exact />
+          <Route path="/" component={HomeScreen} exact />
         </Container>
       </main>
       <Footer />
+    </FilterProvider>
     </Router>
+
   );
 };
 

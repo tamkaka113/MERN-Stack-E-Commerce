@@ -1,32 +1,42 @@
-import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import React, { useEffect } from "react";
+import { Form, Button } from "react-bootstrap";
+import { listProducts } from "../actions/productActions";
+import { useDispatch } from "react-redux";
+import queryString from "query-string";
+import { useFilterContext } from "../contexts/FilterContexts";
 
 const SearchBox = ({ history }) => {
-  const [keyword, setKeyword] = useState('')
+  const { filter, setFilter } = useFilterContext();
 
+  const dispatch = useDispatch();
   const submitHandler = (e) => {
-    e.preventDefault()
-    if (keyword.trim()) {
-      history.push(`/search/${keyword}`)
-    } else {
-      history.push('/')
-    }
-  }
+    e.preventDefault();
+
+  };
+ 
+  useEffect(() => {
+    dispatch(listProducts(filter));
+    const params = queryString.stringify(filter);
+    history.push(`/?${params}`);
+  }, [filter,dispatch]);
 
   return (
-    <Form onSubmit={submitHandler} className ='d-flex'>
+    <Form onSubmit={submitHandler} className="d-flex">
       <Form.Control
-        type='text'
-        name='q'
-        onChange={(e) => setKeyword(e.target.value)}
-        placeholder='Search Products...'
-        className='mr-sm-2 ml-sm-5'
+        type="text"
+        name="q"
+        onChange={(e) => setFilter({
+          ...filter,
+          pageNumber:1,
+          keyword:e.target.value,
+        })}
+        placeholder="Search Products..."
+        className="mr-sm-2 ml-sm-5"
       ></Form.Control>
-      <Button type='submit' variant='outline-success' className='p-2'>
+      <Button type="submit" variant="outline-success" className="p-2">
         Search
       </Button>
     </Form>
-  )
-}
-
-export default SearchBox
+  );
+};
+export default SearchBox;

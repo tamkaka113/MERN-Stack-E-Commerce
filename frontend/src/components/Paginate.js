@@ -1,29 +1,37 @@
-import React from 'react'
-import { Pagination,PaginationItem } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import React from "react";
+import { Pagination } from "react-bootstrap";
 
-const Paginate = ({pages,page,isAdmin=false,keyword =''}) => {
-  return (
+
+import { useDispatch, useSelector } from "react-redux";
+
+import {useFilterContext} from '../contexts/FilterContexts'
+import queryString from "query-string";
+const Paginate = () => {
+
+  const productList = useSelector((state) => state.productList);
+  const {  page, pages } = productList;
+  const  {filter, setFilter} =useFilterContext()
+
+
+
+  return ( 
     pages > 1 && (
       <Pagination>
         {[...Array(pages).keys()].map((x) => (
-          <LinkContainer
-            key={x + 1}
-            to={
-              !isAdmin
-                ? keyword
-                  ? `/search/${keyword}/page/${x + 1}`
-                  : `/page/${x + 1}`
-                : `/admin/productlist/${x + 1}`
-            }
-          >
-            <Pagination.Item activeLabel=''  active={x + 1 === page}>{x + 1}</Pagination.Item>
-          </LinkContainer>
+      
+            <Pagination.Item 
+            onClick ={() => setFilter({
+              ...filter,
+              pageNumber:x+1
+            })}
+            activeLabel="" active={x + 1 === page}>
+              {x + 1}
+            </Pagination.Item>
+       
         ))}
       </Pagination>
-    ))
-   
-  
-}
+    )
+  );
+};
 
-export default Paginate
+export default Paginate;

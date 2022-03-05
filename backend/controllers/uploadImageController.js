@@ -3,6 +3,7 @@ import fs from "fs";
 import asyncHandler from "express-async-handler";
 
 export const uploadImageController = asyncHandler(async (req, res) => {
+
   const result = await cloudinary.uploader.upload(
     req.files.image.tempFilePath,
     {

@@ -23,6 +23,7 @@ import {
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
+
 } from "../constants/productConstants";
 export const productListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
@@ -134,3 +135,6 @@ export const productTopRatedReducer = (state = { products: [] }, action) => {
       return state;
   }
 };
+
+
+

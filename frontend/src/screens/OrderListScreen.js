@@ -14,7 +14,6 @@ const OrderListScreen = ({ history, match }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  console.log(orders)
   useEffect(() => {
     if (!userInfo.isAdmin) {
       history.push("/login");

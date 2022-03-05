@@ -7,7 +7,7 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
-
+import axios from 'axios'
 const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id
 
@@ -23,8 +23,11 @@ const ProductEditScreen = ({ match, history }) => {
 
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
-
   const productUpdate = useSelector((state) => state.productUpdate)
+
+  const userLogin =useSelector(state => state.userLogin)
+ const {userInfo} =userLogin
+
   const {
     loading: loadingUpdate,
     error: errorUpdate,
@@ -36,12 +39,12 @@ const ProductEditScreen = ({ match, history }) => {
       dispatch({ type: PRODUCT_UPDATE_RESET })
       history.push('/admin/productlist')
     } else {
-      if (!product.name || product._id !== productId) {
+      if (!product?.name || product._id !== productId) {
         dispatch(listProductDetails(productId))
       } else {
         setName(product.name)
         setPrice(product.price)
-        setImage(product.image)
+        setImage(product.image) 
         setBrand(product.brand)
         setCategory(product.category)
         setCountInStock(product.countInSock)
@@ -65,6 +68,31 @@ const ProductEditScreen = ({ match, history }) => {
       })
     )
   }
+
+  const uploadImageHandler =async (e)=> {
+   
+    const file = e.target.files[0];
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${userInfo.token}`
+            },
+        };
+
+        const { data:{image} } = await axios.post(`/api/v1/products/uploads`, formData, config);
+        
+        setImage(image);
+    } catch (error) {
+        console.error(error);
+       
+    };
+};
+  
 
   return (
     <>
@@ -104,10 +132,10 @@ const ProductEditScreen = ({ match, history }) => {
             <Form.Group controlId='image'>
               <Form.Label>Image</Form.Label>
               <Form.Control
-                type='text'
+                type='file'
                 placeholder='Enter image url'
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                name='file'
+                onChange={(e) =>{uploadImageHandler(e)}}
               ></Form.Control>
             </Form.Group>
 
