@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const ProfileScreen = ({ history }) => {
   const [name, setName] = useState("");
@@ -21,9 +22,11 @@ const ProfileScreen = ({ history }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+ 
 
+  console.log(userInfo)
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const { success } = userUpdateProfile;
+  const { success,loading:updateLoading } = userUpdateProfile;
 
   const myOrderList = useSelector((state) => state.myOrderList);
   const { loading: loadingOrders, error: errorOrders, orders } = myOrderList;
@@ -32,22 +35,24 @@ const ProfileScreen = ({ history }) => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user?.name) {
-        dispatch(listMyOrders());
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails("profile"));
+        dispatch(listMyOrders());
       } else {
-        setName(user.name);
-        setEmail(user.email);
+      setName(user.name);
+     setEmail(user.email); 
       }
     }
-  }, [dispatch, history, userInfo, user, userInfo?.name]);
-
+  }, [dispatch, history, userInfo, user, success]);
+  console.log(name)
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(updateUserProfile({ name, email, password }));
+
+      dispatch(updateUserProfile({id: user._id, name, email, password  }));
     }
   };
   return (
@@ -56,8 +61,9 @@ const ProfileScreen = ({ history }) => {
         <h2>User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
-        {success && <Message variant="success">Profile Updated</Message>}
+        {updateLoading && <Loader />}
         {loading && <Loader />}
+        {success && <Message variant="success">Profile Updated</Message>}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name">
             <Form.Label>Name</Form.Label>

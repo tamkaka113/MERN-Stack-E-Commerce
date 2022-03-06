@@ -2,13 +2,11 @@ import Product from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const pageSize = 1;
 
-  const { keyword, pageNumber, category, rating, price } = req.query;
+  const { keyword, pageNumber, category, rating, price,limit } = req.query;
 
-  console.log(category);
   const queryObject = {};
-
+  const newLimit =Number(limit)
   if (keyword) {
     queryObject.name = { $regex: keyword, $options: "i" };
   }
@@ -34,10 +32,10 @@ export const getAllProducts = asyncHandler(async (req, res) => {
   const count = await Product.countDocuments(queryObject);
 
   const products = await Product.find(queryObject)
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+    .limit(newLimit)
+    .skip(newLimit * (page - 1));
 
-  res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  res.json({ products, page, pages: Math.ceil(count / newLimit) });
 });
 
 export const getSingleProduct = asyncHandler(async (req, res) => {
@@ -69,7 +67,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     image: "/image/sample.jpg",
     brand: "Sample brand ",
     category: "Sample category ",
-    countInstock: 0,
+    countInStock: 0,
     numReviews: 0,
     description: "Sample description ",
   });
@@ -79,21 +77,19 @@ export const createProduct = asyncHandler(async (req, res) => {
 });
 
 export const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, image, brand, category, countInstock, description } =
+  const { name, price, image, brand, category, countInStock, description } =
     req.body;
-
   const product = await Product.findById(req.params.id);
   if (!product) {
     res.status(404);
     throw new Error("Product Not Found");
   }
-
   product.name = name;
   product.price = price;
   product.image = image;
   product.brand = brand;
   product.category = category;
-  product.countInstock = countInstock;
+  product.countInStock = countInStock;
   product.description = description;
 
   const updateProduct = await product.save();

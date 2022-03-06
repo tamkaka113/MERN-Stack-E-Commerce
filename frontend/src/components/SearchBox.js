@@ -13,11 +13,10 @@ const SearchBox = ({ history }) => {
     e.preventDefault();
 
   };
- 
   useEffect(() => {
     dispatch(listProducts(filter));
     const params = queryString.stringify(filter);
-    history.push(`/?${params}`);
+    history.push(`/homeProduct/${params}`);
   }, [filter,dispatch]);
 
   return (
@@ -26,7 +25,7 @@ const SearchBox = ({ history }) => {
         type="text"
         name="q"
         onChange={(e) => setFilter({
-          ...filter,
+          limit:filter.limit,
           pageNumber:1,
           keyword:e.target.value,
         })}

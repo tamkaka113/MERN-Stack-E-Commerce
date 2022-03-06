@@ -1,15 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Form, Col, Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import queryString from "query-string";
 import { useFilterContext } from "../contexts/FilterContexts";
-import { listProducts } from "../actions/productActions";
-import { useDispatch } from "react-redux";
-const FilterProduct = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
+
+const FilterProduct = () => {;
+
   const { filter, setFilter } = useFilterContext();
   const categories = ["all", "Iphone", "Ipad", "Macbook", "Others"];
+
+
   const ratings = [
     { name: "all" },
     { name: "1 Star", value: 1 },
@@ -30,30 +28,28 @@ const FilterProduct = () => {
     const { name, value } = e.target;
 
     setFilter({
-      keyword:"",
-      pageNumber:1,
+      ...filter,
+      keyword: "",
+      pageNumber: 1,
       [name]: value,
     });
   };
 
-
   const handleSubmit = (e) => {
-    const newFilter = delete filter.keyword;
     e.preventDefault();
-    if(newFilter) {
-      dispatch(listProducts(filter));
 
-      const params = queryString.stringify(filter);
-      history.push(`/homeProduct/${params}`);
-    }
+    setFilter({
+      ...filter,
+      category: "all",
+      price: "all",
+      rating: "all",
+    });
   };
-
-
 
   return (
     <Col>
       <Form onSubmit={handleSubmit} className="d-flex mt-3">
-        <Col lg={3}>
+        <Col lg={3} md ={3}>
           <Form.Group controlId="category">
             <Form.Label className="mr-2">Category: </Form.Label>
             <Form.Select
@@ -71,7 +67,7 @@ const FilterProduct = () => {
           </Form.Group>
         </Col>
 
-        <Col lg={3}>
+        <Col lg={3}  md ={3}>
           <Form.Group controlId="price">
             <Form.Label className="mr-2">Price:</Form.Label>
             <Form.Select
@@ -89,7 +85,7 @@ const FilterProduct = () => {
           </Form.Group>
         </Col>
 
-        <Col lg={3}>
+        <Col lg={3}  md ={3}>
           <Form.Group controlId="Reviews">
             <Form.Label className="mr-2">Rating: </Form.Label>
             <Form.Select
@@ -106,8 +102,12 @@ const FilterProduct = () => {
             </Form.Select>
           </Form.Group>
         </Col>
-        <Col lg={1}>
-          <Button type="submit" variant="primary">
+        <Col lg={2}  md ={2}>
+          <Button
+            style={{ marginTop: "-14px" }}
+            type="submit"
+            variant="primary"
+          >
             Clear Filter
           </Button>
         </Col>

@@ -4,6 +4,7 @@ const FilterContext = createContext();
 export const FilterProvider = ({ children }) => {
   const [filter, setFilter] = useState({
     pageNumber: 1,
+    limit:3,
     keyword: "",
     category:'all',
     price:'all',

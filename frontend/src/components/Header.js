@@ -23,7 +23,7 @@ const { userInfo} =userLogin
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <LinkContainer to="/" onClick ={()=>{ window.location.reload()}}>
+          <LinkContainer to="/" >
             <Navbar.Brand>E-Shop</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle  className='mb-1' aria-controls="basic-navbar-nav" />
