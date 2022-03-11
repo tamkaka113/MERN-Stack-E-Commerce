@@ -37,7 +37,7 @@ const HomeScreen = ({ match, history }) => {
   return (
     <>
       <Meta />
-     {!filter.keyword && <ProductCarousel />}
+     <ProductCarousel />
 
       <h1>Latest Products</h1>
       {loading ? (

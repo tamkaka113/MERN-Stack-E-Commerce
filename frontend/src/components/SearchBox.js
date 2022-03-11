@@ -5,13 +5,14 @@ import { useDispatch } from "react-redux";
 import queryString from "query-string";
 import { useFilterContext } from "../contexts/FilterContexts";
 
+
 const SearchBox = ({ history }) => {
   const { filter, setFilter } = useFilterContext();
 
   const dispatch = useDispatch();
   const submitHandler = (e) => {
     e.preventDefault();
-
+ 
   };
   useEffect(() => {
     dispatch(listProducts(filter));

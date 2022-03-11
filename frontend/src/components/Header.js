@@ -6,8 +6,10 @@ import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userActions";
 import { getUserDetails } from "../actions/userActions";
 import SearchBox from "./SearchBox";
+import { useFilterContext } from "../contexts/FilterContexts";
 
 const Header = () => {
+const { filter, setFilter } = useFilterContext();
   const dispatch = useDispatch();
   const userLogin =useSelector(state => state.userLogin)
 const { userInfo} =userLogin
@@ -23,7 +25,10 @@ const { userInfo} =userLogin
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <LinkContainer to="/" >
+          <LinkContainer to="/" onClick = {()=> {setFilter({
+            ...filter,
+            keyword:'',pageNumber:1
+          })}}>
             <Navbar.Brand>E-Shop</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle  className='mb-1' aria-controls="basic-navbar-nav" />
