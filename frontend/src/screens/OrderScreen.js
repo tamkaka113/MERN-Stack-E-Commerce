@@ -68,7 +68,7 @@ const { userInfo} =userLogin
       if (!window.paypal) {
         addPayPalScript();
       } else {
-        window.location.reload();
+        window.location.reload()
         setSdkReady(true);
       }
     }

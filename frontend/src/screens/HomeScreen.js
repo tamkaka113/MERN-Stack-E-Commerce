@@ -25,12 +25,12 @@ const HomeScreen = ({ match, history }) => {
   useEffect(() => {
   
     if (Object.keys(newParams).length !== 0) {
-      dispatch(listProducts(newParams));
-      history.push(`/homeProduct/${params}`);
+   dispatch(listProducts(newParams)); 
+      history.push(`/homeProduct/${params}`); 
  
     } else {
       dispatch(listProducts({limit:filter.limit,pageNumber:1}));
-      history.push('/')
+     history.push('/') 
     }
   }, [dispatch, history,filter.limit]);
   productRef.current?.scrollIntoView({ behavior: "smooth" });

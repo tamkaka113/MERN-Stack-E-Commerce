@@ -22,7 +22,9 @@ const OrderListScreen = ({ history, match }) => {
     dispatch(orderListAdmin());
   }, [dispatch, history, userInfo]);
 
-  const deleteHandler = () => {};
+  const deleteHandler = (id) => {
+  
+  };
 
   return (
     <>
