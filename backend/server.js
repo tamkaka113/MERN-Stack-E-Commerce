@@ -23,7 +23,6 @@ cloudinary.config({
 
 })
 const __dirname = path.resolve()
-app.use(express.static(path.join(__dirname,'./frontend/build')))
 
 app.use(morgan('dev'))
 app.use(express.json())
