@@ -74,7 +74,7 @@ const { userInfo} =userLogin
     }
 
     dispatch(resetCart(order?.isPaid));
-  }, [dispatch, orderId, successPay, order, order?.isPaid,successDeliver,userInfo]);
+  }, [dispatch, orderId, successPay, order, order?.isPaid,successDeliver,userInfo,history]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));

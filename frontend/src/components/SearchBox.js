@@ -18,7 +18,7 @@ const SearchBox = ({ history }) => {
     dispatch(listProducts(filter));
     const params = queryString.stringify(filter);
     history.push(`/homeProduct/${params}`);
-  }, [filter,dispatch]);
+  }, [filter,dispatch,history]);
 
   return (
     <Form onSubmit={submitHandler} className="d-flex">

@@ -1,11 +1,8 @@
 import React from "react";
 import { Pagination } from "react-bootstrap";
-
-
-import { useDispatch, useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
 import {useFilterContext} from '../contexts/FilterContexts'
-import queryString from "query-string";
+
 const Paginate = () => {
 
   const productList = useSelector((state) => state.productList);

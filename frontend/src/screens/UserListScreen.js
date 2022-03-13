@@ -24,7 +24,7 @@ const UserListScreen = ({ history }) => {
     }
 
   
-  }, [dispatch, history,successDelete])
+  }, [dispatch, history,successDelete,userInfo])
 
   const deleteHandler = (id) => {
     dispatch(deleteUser(id))

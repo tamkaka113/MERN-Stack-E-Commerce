@@ -6,6 +6,7 @@ import userRouter from './routes/userRouter.js'
 import orderRouter from './routes/orderRouter.js'
 import { notFound,errorHandler } from "./middleware/errorMiddleware.js";
 import 'express-async-errors'
+import path from 'path'
 import morgan from 'morgan'
 import fileUpload from 'express-fileupload'
 import {v2 as cloudinary}  from 'cloudinary';
@@ -21,12 +22,11 @@ cloudinary.config({
   api_secret:process.env.CLOUD_API_SECRET,
 
 })
+const __dirname = path.resolve()
+app.use(express.static(path.join(__dirname,'./frontend/build')))
+
 app.use(morgan('dev'))
 app.use(express.json())
-
-app.get("/", (req, res) => {
-  res.send("API is running....");
-});
 
 
 app.use("/api/v1/products", productRouter);
@@ -37,6 +37,17 @@ app.get('/api/v1/config/paypal', (req,res) => res.send(process.env.PAYPAL_CLIENT
 app.use(notFound)
 app.use(errorHandler)
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  )
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running....')
+  })
+}
 const PORT = process.env.PORT || 5000;
 
 app.listen(
