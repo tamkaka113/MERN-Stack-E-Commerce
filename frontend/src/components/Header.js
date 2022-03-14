@@ -1,18 +1,19 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userActions";
 import { getUserDetails } from "../actions/userActions";
 import SearchBox from "./SearchBox";
 import { useFilterContext } from "../contexts/FilterContexts";
-
+import { useHistory } from "react-router-dom";
 const Header = () => {
-const { filter, setFilter } = useFilterContext();
+  const history =useHistory()
+  const { filter, setFilter } = useFilterContext();
   const dispatch = useDispatch();
-  const userLogin =useSelector(state => state.userLogin)
-const { userInfo} =userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -20,25 +21,35 @@ const { userInfo} =userLogin
   const handleProfile = () => {
     dispatch(getUserDetails("profile"));
   };
+  const handleHomePage = () => {
+    setFilter({
+      ...filter,
+      keyword: "",
+      category: "",
+      price: "",
+      rating: "",
+    });
 
+    localStorage.setItem("search", JSON.stringify(filter));
+
+  };
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <LinkContainer to="/" onClick = {()=> {setFilter({
-            ...filter,
-            keyword:'',pageNumber:1
-          })}}>
+          <LinkContainer
+            to="/"
+            onClick={() => {
+              handleHomePage();
+            }}
+          >
             <Navbar.Brand>E-Shop</Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle  className='mb-1' aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle className="mb-1" aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-
-          <Route render ={({history})=> <SearchBox  history ={history}/>}/>
+            <Route render={({ history }) => <SearchBox history={history} />} />
             <Nav className="ml-auto">
-              <LinkContainer
-                to="/cart"
-              >
+              <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i> Cart
                 </Nav.Link>

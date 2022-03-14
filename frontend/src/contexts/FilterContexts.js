@@ -6,9 +6,9 @@ export const FilterProvider = ({ children }) => {
     pageNumber: 1,
     limit:4,
     keyword: "",
-    category:'all',
-    price:'all',
-    rating:'all'
+    category:'',
+    price:'',
+    rating:''
   });
 
   return (

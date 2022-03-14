@@ -12,33 +12,59 @@ import { listProducts } from "../actions/productActions";
 import FilterProduct from "../components/FilterProduct";
 import queryString from "query-string";
 import { useFilterContext } from "../contexts/FilterContexts";
-const HomeScreen = ({ match, history }) => {
+const HomeScreen = ({ history, location, match }) => {
   const { filter } = useFilterContext();
-  const params = match.params.id;
   const productRef = useRef();
-  const newParams = queryString.parse(params);
   const dispatch = useDispatch();
+  const id = match.params.id;
 
+  console.log(location);
+  const urlParams = queryString.parse(id);
+  localStorage.setItem("search", JSON.stringify(urlParams));
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
+  const newFilter = JSON.parse(localStorage.getItem("search"));
+  const homeFilter = JSON.parse(localStorage.getItem("homePage"));
 
-  useEffect(() => {
-  
-    if (Object.keys(newParams).length !== 0) {
-   dispatch(listProducts(newParams)); 
-      history.push(`/homeProduct/${params}`); 
  
+  useEffect(() => {
+    if (
+      newFilter.price ||
+      newFilter.category ||
+      newFilter.rating ||
+      (newFilter.keyword && location.pathname.includes("homeProduct"))
+    ) {
+      dispatch(listProducts(newFilter));
+      const newParams = queryString.stringify(newFilter);
+      history.push(`/homeProduct/${newParams}`);
     } else {
-      dispatch(listProducts({limit:filter.limit,pageNumber:1}));
-     history.push('/') 
-    }
-  }, [dispatch, history,filter.limit]);
-  productRef.current?.scrollIntoView({ behavior: "smooth" });
+      dispatch(
+        listProducts(
+     {
+            limit: filter.limit,
+            pageNumber: filter.pageNumber,
+          }
+        )
+      );
 
+      const params = queryString.stringify({ limit: filter.limit, pageNumber: filter.pageNumber }
+      );
+      history.push(`/?${params}`);
+    }
+  }, [
+    dispatch,
+    history,
+    filter.limit,
+    filter.pageNumber,
+    filter.limit,
+    newFilter.pageNumber,
+  ]);
+
+  productRef.current?.scrollIntoView({ behavior: "smooth" });
   return (
     <>
       <Meta />
-     <ProductCarousel />
+      <ProductCarousel />
 
       <h1>Latest Products</h1>
       {loading ? (
@@ -50,10 +76,10 @@ const HomeScreen = ({ match, history }) => {
           <Row>
             <FilterProduct />
           </Row>
-          <Row >
+          <Row ref={productRef}>
             {products?.map((product) => (
-              <Col ref={productRef} key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product  product={product} />
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
               </Col>
             ))}
           </Row>

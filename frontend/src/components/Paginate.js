@@ -9,18 +9,21 @@ const Paginate = () => {
   const {  page, pages } = productList;
   const  {filter, setFilter} =useFilterContext()
 
+const handlePaginate = (x) => {
+setFilter ({
+  ...filter,
+  pageNumber:x+1
+})
 
-
+}
+localStorage.setItem('search',JSON.stringify(filter))
   return ( 
     pages > 1 && (
       <Pagination>
         {[...Array(pages).keys()].map((x) => (
       
             <Pagination.Item 
-            onClick ={() => setFilter({
-              ...filter,
-              pageNumber:x+1
-            })}
+            onClick ={() => handlePaginate(x)}
             activeLabel="" active={x + 1 === page}>
               {x + 1}
             </Pagination.Item>

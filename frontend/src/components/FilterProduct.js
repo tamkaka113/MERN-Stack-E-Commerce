@@ -1,13 +1,16 @@
 import React from "react";
 import { Form, Col, Button } from "react-bootstrap";
 import { useFilterContext } from "../contexts/FilterContexts";
-
+import { listProducts } from "../actions/productActions";
+import { useDispatch } from "react-redux";
+import queryString from 'query-string'
+import {useHistory}  from 'react-router-dom'
 const FilterProduct = () => {;
-
+const dispatch =useDispatch()
   const { filter, setFilter } = useFilterContext();
   const categories = ["all", "Iphone", "Ipad", "Macbook", "Others"];
 
-
+ const history =useHistory()
   const ratings = [
     { name: "all" },
     { name: "1 Star", value: 1 },
@@ -37,14 +40,12 @@ const FilterProduct = () => {;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    setFilter({
-      ...filter,
-      category: "all",
-      price: "all",
-      rating: "all",
-    });
-  };
+    const newParams = queryString.stringify(filter)
+  history.push(`/homeProduct/${newParams}`)
+  dispatch(listProducts(filter))
+  localStorage.setItem('search',JSON.stringify(filter))
+  
+};
 
   return (
     <Col>
@@ -108,7 +109,7 @@ const FilterProduct = () => {;
             type="submit"
             variant="primary"
           >
-            Clear Filter
+           Find 
           </Button>
         </Col>
       </Form>

@@ -12,11 +12,15 @@ const SearchBox = ({ history }) => {
   const dispatch = useDispatch();
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(listProducts(filter));
+
     const params = queryString.stringify(filter);
+    dispatch(listProducts(filter))
+    localStorage.setItem('search',JSON.stringify(filter))
     history.push(`/homeProduct/${params}`);
- 
+    
   };
+  
+
 
   return (
     <Form onSubmit={submitHandler} className="d-flex">
