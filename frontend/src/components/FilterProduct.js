@@ -3,14 +3,14 @@ import { Form, Col, Button } from "react-bootstrap";
 import { useFilterContext } from "../contexts/FilterContexts";
 import { listProducts } from "../actions/productActions";
 import { useDispatch } from "react-redux";
-import queryString from 'query-string'
-import {useHistory}  from 'react-router-dom'
-const FilterProduct = () => {;
-const dispatch =useDispatch()
+import queryString from "query-string";
+import { useHistory } from "react-router-dom";
+const FilterProduct = () => {
+  const dispatch = useDispatch();
   const { filter, setFilter } = useFilterContext();
   const categories = ["all", "Iphone", "Ipad", "Macbook", "Others"];
 
- const history =useHistory()
+  const history = useHistory();
   const ratings = [
     { name: "all" },
     { name: "1 Star", value: 1 },
@@ -40,17 +40,16 @@ const dispatch =useDispatch()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newParams = queryString.stringify(filter)
-  history.push(`/homeProduct/${newParams}`)
-  dispatch(listProducts(filter))
-  localStorage.setItem('search',JSON.stringify(filter))
-  
-};
+    const newParams = queryString.stringify(filter);
+    history.push(`/homeProduct/${newParams}`);
+    dispatch(listProducts(filter));
+    localStorage.setItem("search", JSON.stringify(filter));
+  };
 
   return (
     <Col>
       <Form onSubmit={handleSubmit} className="d-flex mt-3">
-        <Col lg={3} md ={3}>
+        <Col lg={3} md={4} xs={3}>
           <Form.Group controlId="category">
             <Form.Label className="mr-2">Category: </Form.Label>
             <Form.Select
@@ -68,7 +67,7 @@ const dispatch =useDispatch()
           </Form.Group>
         </Col>
 
-        <Col lg={3}  md ={3}>
+        <Col lg={3} md={3} xs={3}>
           <Form.Group controlId="price">
             <Form.Label className="mr-2">Price:</Form.Label>
             <Form.Select
@@ -86,7 +85,7 @@ const dispatch =useDispatch()
           </Form.Group>
         </Col>
 
-        <Col lg={3}  md ={3}>
+        <Col lg={3} md={3} xs={3}>
           <Form.Group controlId="Reviews">
             <Form.Label className="mr-2">Rating: </Form.Label>
             <Form.Select
@@ -103,13 +102,9 @@ const dispatch =useDispatch()
             </Form.Select>
           </Form.Group>
         </Col>
-        <Col lg={2}  md ={2}>
-          <Button
-            style={{ marginTop: "-14px" }}
-            type="submit"
-            variant="primary"
-          >
-           Find 
+        <Col lg={2} md={2} xs={3}>
+          <Button className="find-product" type="submit" variant="primary">
+            Find
           </Button>
         </Col>
       </Form>

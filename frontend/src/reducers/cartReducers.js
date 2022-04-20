@@ -7,7 +7,7 @@ import {
 } from "../constants/cartConstants";
 
 export const cartReducer = (
-  state = { cartItems: [], shippingAddress: {} },
+  state = { cartItems:[], shippingAddress: {} },
   action
 ) => {
   switch (action.type) {
@@ -21,12 +21,11 @@ export const cartReducer = (
           ...state,
           cartItems: state.cartItems.map((x) =>
             x.product === existItem.product ? item : x
-          ),
-        };
+          )};
       } else {
         return {
           ...state,
-          cartItems: [...state.cartItems, item],
+          cartItems:[...state.cartItems, item],
         };
       }
     case CART_REMOVE_ITEM:
@@ -35,12 +34,11 @@ export const cartReducer = (
         cartItems: state.cartItems.filter((x) => x.product !== action.payload),
       };
 
-
-    case CART_RESET_ITEM: 
-    return {
-      cartItems:[],
-      shippingAddress: {}
-    }
+    case CART_RESET_ITEM:
+      return {
+        cartItems: [],
+        shippingAddress: {},
+      };
     case CART_SAVE_SHIPPING_ADDRESS:
       return {
         ...state,

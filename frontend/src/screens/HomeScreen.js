@@ -26,7 +26,6 @@ const HomeScreen = ({ history, location, match }) => {
   const newFilter = JSON.parse(localStorage.getItem("search"));
   const homeFilter = JSON.parse(localStorage.getItem("homePage"));
 
- 
   useEffect(() => {
     if (
       newFilter.price ||
@@ -39,16 +38,16 @@ const HomeScreen = ({ history, location, match }) => {
       history.push(`/homeProduct/${newParams}`);
     } else {
       dispatch(
-        listProducts(
-     {
-            limit: filter.limit,
-            pageNumber: filter.pageNumber,
-          }
-        )
+        listProducts({
+          limit: filter.limit,
+          pageNumber: filter.pageNumber,
+        })
       );
 
-      const params = queryString.stringify({ limit: filter.limit, pageNumber: filter.pageNumber }
-      );
+      const params = queryString.stringify({
+        limit: filter.limit,
+        pageNumber: filter.pageNumber,
+      });
       history.push(`/?${params}`);
     }
   }, [
@@ -76,6 +75,7 @@ const HomeScreen = ({ history, location, match }) => {
           <Row>
             <FilterProduct />
           </Row>
+
           <Row ref={productRef}>
             {products?.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
@@ -83,6 +83,7 @@ const HomeScreen = ({ history, location, match }) => {
               </Col>
             ))}
           </Row>
+
           <Paginate />
         </>
       )}

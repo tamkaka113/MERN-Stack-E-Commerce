@@ -78,18 +78,24 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 });
 
 const getUserOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({user:req.user._id});
-  res.status(200).json(orders)
+  const orders = await Order.find({ user: req.user._id });
+  res.status(200).json(orders);
 
   res.json(updateOrder);
 });
-
 
 const getOrderList = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate('user','id name email');
-  res.status(200).json(orders)
+  const orders = await Order.find({}).populate("user", "id name email");
+  res.status(200).json(orders);
 
   res.json(updateOrder);
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid,getUserOrders,getOrderList,updateOrderToDelivered };
+export {
+  addOrderItems,
+  getOrderById,
+  updateOrderToPaid,
+  getUserOrders,
+  getOrderList,
+  updateOrderToDelivered,
+};
