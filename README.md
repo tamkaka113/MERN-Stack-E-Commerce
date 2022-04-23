@@ -52,18 +52,18 @@ npm run server
 
 ## Build & Deploy
 
-- Create frontend prod build
+# Create frontend prod build
 
-cd frontend
-npm run build
+- cd frontend
+- npm run build
 
 ## Seed Database
 
--Import data
+- Import data
 
 npm run data:import
 
--Destroy data
+- Destroy data
 
 npm run data:destroy
 
