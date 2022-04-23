@@ -1,18 +1,18 @@
 # Features
 
-Full featured shopping cart
-Product reviews and rating
-Top products carousel
-Product pagination
-Product search feature
-User profile with orders
-Admin product management
-Admin user management
-Admin Order details page
-Mark orders as delivered option
-Checkout process (shipping, payment method, etc)
-PayPal / credit card integration
-Database seeder (products & users)
+- Full featured shopping cart
+- Product reviews and rating
+- Top products carousel
+- Product pagination
+- Product search feature
+- User profile with orders
+- Admin product management
+- Admin user management
+- Admin Order details page
+- Mark orders as delivered option
+- Checkout process (shipping, payment method, etc)
+- PayPal / credit card integration
+- Database seeder (products & users)
 
 ## Usage
 
@@ -24,15 +24,15 @@ You can also install and setup Babel if you would like
 
 ## Env Variables
 
-NODE_ENV = development
-PORT = 5000
-MONGO_URI = your mongodb uri
-PAYPAL_CLIENT_ID = your paypal client id
-JWT_SECRET =aNdRgUkXp2s5u8x/A?D(G+KbPeShVmY
-JWT_LIFETIME=30d
-CLOUD_NAME= Cloudinary Name
-CLOUD_API_KEY= Cloudinary Key
-CLOUD_API_SECRET=Cloudinary Secret
+- NODE_ENV = development
+- PORT = 5000
+- MONGO_URI = your mongodb uri
+- PAYPAL_CLIENT_ID = your paypal client id
+- JWT_SECRET =aNdRgUkXp2s5u8x/A?D(G+KbPeShVmY
+- JWT_LIFETIME=30d
+- CLOUD_NAME= Cloudinary Name
+- CLOUD_API_KEY= Cloudinary Key
+- CLOUD_API_SECRET=Cloudinary Secret
 
 ## Install Dependencies (frontend & backend)
 
